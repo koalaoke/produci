@@ -1,0 +1,12 @@
+//SIMULACAO [nome] [semente] [limite de ticks]
+//PRODUTOS <quantidade> <taxa_produtos_por_tick> <modelo>
+//LINHA <n_etapas> 
+//ETAPA <id> <n_atividades> [nome]
+//ATIVIDADE <id> <tempo> <taxa_falha> <capacidade> [vazão] [nome]
+
+
+SIMULACAO ExemploSimulacao
+PRODUTOS 10 5 ModeloA
+ETAPA Fase1
+ATIVIDADE Tarefa1
+ATIVIDADE Tarefa2

@@ -1,0 +1,29 @@
+wtd:
+- make parsing function
+- set structs for: Etapa, Atividade, Produto
+- create structs and line of production according to the parsed info
+- Append parsed info into structs
+
+STRUCT ETAPA{
+    struct etapa *prox;
+    struct etapa *ant;
+    int capacidade;
+    struct atividade *primeira_atividade;
+    int taxa_voltar_etapa
+}
+STRUCT ATIVIDADE{
+    struct atividade *prox;
+    int taxa_falha;
+    int capacidade;
+    int tempo;
+    int id;
+    int vazao;
+    char nome[128];
+}
+STRUCT PRODUTO{
+    char modelo[256];
+    int id;
+    struct atividade *atividade;
+    struct etapa *etapa;
+}
+
