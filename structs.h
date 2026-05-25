@@ -2,33 +2,50 @@
 #define STRUCTS_H
 #define STR_LEN 256
 
+struct Label{
+    char nome[STR_LEN];             // Nome do produto
+};
+
 struct Linha{
     char nome[STR_LEN];             // Nome da linha
+    int qtd_produtos;               // Quantidade de produtos na linha;
     struct Etapa *etapa;            // A primeira etapa;
 };
 
 struct Produto{
-    char nome[STR_LEN];             // Nome do produto
-	struct Produto *prox;           // (util para grupo de produtos)
+    struct Label *label;            // Nome do produto
+    int ciclos;                     // Quantos ciclos o produto passou;
+    struct Produto *prox;           // Utilitário para lista de produtos
 };
 
 
 struct Atividade{
     char nome[STR_LEN];             // Nome da atividade
-	struct Atividade *prox;         // Próxima atividade
+    int ciclos;                     // Ciclos necessários para passar da atividade;
+    struct Produto *fila;           // Os produtos dentro da atividade
+    struct Atividade *prox;         // Próxima atividade
 };
 
 struct Etapa{
     char nome[STR_LEN];             // Nome da etapa
-    struct Atividade *atividade;
-    struct Etapa *ante;
-    struct Etapa *prox;
+    struct Atividade *atividade;    // Lista de atividades
+    struct Etapa *ante;             // Etapa anterior
+    struct Etapa *prox;             // Próxima etapa
 };
 
-struct Linha* criar_linha(char nome[STR_LEN]);
+struct Linha* criar_linha(char *nome);
 void imprime_processo(struct Linha *linha);
-void criar_etapa(struct Linha *linha, char nome_etapa[STR_LEN]);
-void criar_atividade(struct Linha *linha, char nome_atividade[STR_LEN]);
+void imprimir_lote(struct Produto *lote);
+
+void criar_etapa(struct Linha *linha, char *nome_etapa);
+void criar_atividade(struct Linha *linha, char *nome_atividade, int ciclos);
+struct Produto* criar_lote(struct Label *label, int qtd);
+
+void inserir_produtos(struct Produto **destination, struct Produto *source);
+void contar_ciclo(struct Produto **lote);
+
+struct Produto* remover_produto(struct Produto **lista_produtos);
+struct Produto* remover_prontos(struct Produto **lista_produtos, int ciclos);
 void destruir_linha(struct Linha *linha);
 
 #endif

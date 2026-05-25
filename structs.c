@@ -3,6 +3,20 @@
 #include <stdlib.h>
 #include <string.h>
 
+void imprimir_lote(struct Produto *lote) {
+    if (lote == NULL) {
+        printf("[!] O lote esta vazio (NULL).\n");
+        return;
+    }
+    struct Produto *atual = lote;
+
+    while (atual != NULL) {
+        printf("%d ",atual->ciclos);
+        atual = atual->prox;
+    }
+    printf("\n");
+}
+
 void imprime_processo(struct Linha *linha){
     struct Etapa *etapa = linha->etapa;
 
@@ -38,13 +52,14 @@ void destruir_linha(struct Linha *linha){
 }
 
 
-struct Linha* criar_linha(char nome[STR_LEN]){
+struct Linha* criar_linha(char* nome){
     struct Linha *linha = malloc(sizeof(struct Linha));
     linha->etapa = NULL;
+    linha->qtd_produtos = 0;
     return linha;
 }
 
-void criar_etapa(struct Linha *linha, char nome_etapa[STR_LEN]){
+void criar_etapa(struct Linha *linha, char* nome_etapa){
     struct Etapa *nova_etapa = malloc(sizeof(struct Etapa));
     strcpy(nova_etapa->nome, nome_etapa);
     nova_etapa->atividade = NULL;
@@ -61,10 +76,12 @@ void criar_etapa(struct Linha *linha, char nome_etapa[STR_LEN]){
     *walk = nova_etapa;
 }
 
-void criar_atividade(struct Linha *linha, char nome_atividade[STR_LEN]){
+void criar_atividade(struct Linha *linha, char* nome_atividade, int ciclos){
     struct Atividade *nova_atv = malloc(sizeof(struct Atividade));
     strcpy(nova_atv->nome, nome_atividade);
     nova_atv->prox = NULL;
+    nova_atv->ciclos = ciclos;
+    nova_atv->fila = NULL;
 
     struct Etapa *etapa = (linha)->etapa;
     if (!etapa) {
@@ -81,4 +98,52 @@ void criar_atividade(struct Linha *linha, char nome_atividade[STR_LEN]){
     }
 
     *walk = nova_atv;
+}
+
+struct Produto* criar_lote(struct Label *label, int qtd){
+    struct Produto *lote = malloc(sizeof(struct Produto) * qtd);
+    for (int i = 0; i < qtd; i++) {
+        lote[i].label = label;
+        lote[i].ciclos = 0;
+        if (i == qtd - 1)
+            lote[i].prox = NULL;
+        else
+            lote[i].prox = &lote[i+1];
+    }
+    return lote;
+}
+
+void contar_ciclo(struct Produto **lote){
+    struct Produto *aux = *lote;
+    while (aux) {
+        aux->ciclos++;
+        aux = aux->prox;
+    }
+}
+
+void inserir_produtos(struct Produto **destination, struct Produto *source){
+    struct Produto **aux = destination;
+    while(*aux){
+        aux = &(*aux)->prox;
+    }
+    *aux = source;
+}
+
+struct Produto *remover_produto(struct Produto **lote){
+    if (!*lote) return NULL;
+    struct Produto *aux = *lote;
+    *lote = (*lote)->prox;
+    aux->prox = NULL;
+    return aux;
+}
+
+struct Produto *remover_prontos(struct Produto **lote, int ciclos){
+    struct Produto *prontos = NULL;
+    while (*lote != NULL && (*lote)->ciclos >= ciclos) {
+        struct Produto *aux = remover_produto(lote);
+        aux->ciclos = 0;
+        inserir_produtos(&prontos, aux);
+    }
+
+    return prontos;
 }
