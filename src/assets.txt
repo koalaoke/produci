@@ -7,6 +7,9 @@
 
 SIMULACAO ExemploSimulacao
 PRODUTOS 10 5 ModeloA
-ETAPA Fase1
+ETAPA Bernardo_merda
 ATIVIDADE Tarefa1
 ATIVIDADE Tarefa2
+ETAPA MAurino_bosta
+ETAPA Breno_foda
+ETAPA Bosta
