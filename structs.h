@@ -21,7 +21,8 @@ struct Produto{
 
 struct Atividade{
     char nome[STR_LEN];             // Nome da atividade
-    int ciclos;                     // Ciclos necessários para passar da atividade;
+    int ciclos;                     // Ciclos necessários para passar da atividade
+    int capacidade;                 // Quantos produtos podem ser tratados
     struct Produto *fila;           // Os produtos dentro da atividade
     struct Atividade *prox;         // Próxima atividade
 };
@@ -38,11 +39,11 @@ void imprime_processo(struct Linha *linha);
 void imprimir_lote(struct Produto *lote);
 
 void criar_etapa(struct Linha *linha, char *nome_etapa);
-void criar_atividade(struct Linha *linha, char *nome_atividade, int ciclos);
+void criar_atividade(struct Linha *linha, char *nome_atividade, int ciclos, int capacidade);
 struct Produto* criar_lote(struct Label *label, int qtd);
 
 void inserir_produtos(struct Produto **destination, struct Produto *source);
-void contar_ciclo(struct Produto **lote);
+void contar_ciclo(struct Produto **lote, int capacidade);
 
 struct Produto* remover_produto(struct Produto **lista_produtos);
 struct Produto* remover_prontos(struct Produto **lista_produtos, int ciclos);

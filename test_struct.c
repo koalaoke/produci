@@ -8,17 +8,17 @@ int main(){
     struct Linha *processo1 = criar_linha("Linha de processo");
 
     criar_etapa(processo1, "Etapa 1");
-    criar_atividade(processo1, "Atividade 1", 3);
-    criar_atividade(processo1, "Atividade 2", 3);
-    criar_atividade(processo1, "Atividade 3", 3);
+    criar_atividade(processo1, "Atividade 1", 3, 3);
+    criar_atividade(processo1, "Atividade 2", 3, 3);
+    criar_atividade(processo1, "Atividade 3", 3, 3);
     criar_etapa(processo1, "Etapa 2");
-    criar_atividade(processo1, "Atividade 4", 3);
-    criar_atividade(processo1, "Atividade 5", 3);
-    criar_atividade(processo1, "Atividade 6", 3);
+    criar_atividade(processo1, "Atividade 4", 3, 3);
+    criar_atividade(processo1, "Atividade 5", 3, 3);
+    criar_atividade(processo1, "Atividade 6", 3, 3);
     criar_etapa(processo1, "Etapa 3");
-    criar_atividade(processo1, "Atividade 7", 3);
-    criar_atividade(processo1, "Atividade 8", 3);
-    criar_atividade(processo1, "Atividade 9", 3);
+    criar_atividade(processo1, "Atividade 7", 3, 3);
+    criar_atividade(processo1, "Atividade 8", 3, 3);
+    criar_atividade(processo1, "Atividade 9", 3, 3);
     imprime_processo(processo1);
 
     struct Label label;
@@ -37,7 +37,7 @@ int main(){
                 printf("%s: ",atividade->nome);
                 imprimir_lote(atividade->fila);
 
-                contar_ciclo(&atividade->fila);
+                contar_ciclo(&atividade->fila, atividade->capacidade);
                 inserir_produtos(&atividade->fila, prods_transito);
                 prods_transito = remover_prontos(&atividade->fila, atividade->ciclos);
                 atividade = atividade->prox;
