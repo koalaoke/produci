@@ -8,17 +8,17 @@ int main(){
     struct Linha *processo1 = criar_linha("Linha de processo");
 
     criar_etapa(processo1, "Etapa 1");
-    criar_atividade(processo1, "Atividade 1", 3, 3);
-    criar_atividade(processo1, "Atividade 2", 3, 3);
-    criar_atividade(processo1, "Atividade 3", 3, 3);
+    criar_atividade(processo1, "Atividade 1", 3, 3, 50);
+    criar_atividade(processo1, "Atividade 2", 3, 3, 50);
+    criar_atividade(processo1, "Atividade 3", 3, 3, 50);
     criar_etapa(processo1, "Etapa 2");
-    criar_atividade(processo1, "Atividade 4", 3, 3);
-    criar_atividade(processo1, "Atividade 5", 3, 3);
-    criar_atividade(processo1, "Atividade 6", 3, 3);
+    criar_atividade(processo1, "Atividade 4", 3, 3, 50);
+    criar_atividade(processo1, "Atividade 5", 3, 3, 50);
+    criar_atividade(processo1, "Atividade 6", 3, 3, 50);
     criar_etapa(processo1, "Etapa 3");
-    criar_atividade(processo1, "Atividade 7", 3, 3);
-    criar_atividade(processo1, "Atividade 8", 3, 3);
-    criar_atividade(processo1, "Atividade 9", 3, 3);
+    criar_atividade(processo1, "Atividade 7", 3, 3, 50);
+    criar_atividade(processo1, "Atividade 8", 3, 3, 50);
+    criar_atividade(processo1, "Atividade 9", 3, 3, 50);
     imprime_processo(processo1);
 
     struct Label label;
@@ -32,6 +32,7 @@ int main(){
     while (processo1->qtd_produtos > 0) {
         struct Etapa *etapa = processo1->etapa;
         while (etapa) {
+            printf("%s:\n",etapa->nome);
             struct Atividade *atividade = etapa->atividade;
             while (atividade) {
                 printf("%s: ",atividade->nome);
@@ -40,6 +41,14 @@ int main(){
                 contar_ciclo(&atividade->fila, atividade->capacidade);
                 inserir_produtos(&atividade->fila, prods_transito);
                 prods_transito = remover_prontos(&atividade->fila, atividade->ciclos);
+
+                if (prods_transito) {
+                    struct Produto *prods_erro = remover_erros(&atividade->fila, atividade->taxa_erro);
+                    printf("Defeituosos: ");
+                    imprimir_lote(prods_erro);
+                    inserir_produtos(&etapa->atividade->fila, prods_erro);
+                }
+
                 atividade = atividade->prox;
             }
             etapa = etapa->prox;

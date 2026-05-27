@@ -76,23 +76,25 @@ void criar_etapa(struct Linha *linha, char* nome_etapa){
     *walk = nova_etapa;
 }
 
-void criar_atividade(struct Linha *linha, char* nome_atividade, int ciclos, int capacidade){
-    struct Atividade *nova_atv = malloc(sizeof(struct Atividade));
-    strcpy(nova_atv->nome, nome_atividade);
-    nova_atv->ciclos = ciclos;
-    nova_atv->capacidade = capacidade;
-    nova_atv->prox = NULL;
-    nova_atv->fila = NULL;
-
+void criar_atividade(struct Linha *linha, char* nome_atividade, int ciclos, int capacidade, int taxa_erro){
     struct Etapa *etapa = (linha)->etapa;
     if (!etapa) {
         return;
     }
 
+    struct Atividade *nova_atv = malloc(sizeof(struct Atividade));
+    strcpy(nova_atv->nome, nome_atividade);
+    nova_atv->ciclos = ciclos;
+    nova_atv->capacidade = capacidade;
+    nova_atv->taxa_erro = taxa_erro;
+    nova_atv->prox = NULL;
+    nova_atv->fila = NULL;
+
     while(etapa->prox){
         etapa = etapa->prox;
     }
 
+    nova_atv->etapa = etapa;
     struct Atividade **walk = &etapa->atividade;
     while(*walk){
         walk = &(*walk)->prox;
@@ -147,4 +149,21 @@ struct Produto *remover_prontos(struct Produto **lote, int ciclos){
     }
 
     return prontos;
+}
+
+struct Produto* remover_erros(struct Produto **lote, int taxa_erros){
+    struct Produto *erros = NULL;
+    struct Produto **walk = lote;
+    while (*walk) {
+        struct Produto *aux = *walk;
+        if(rand() % 100 < taxa_erros){
+            *walk = aux->prox;
+            aux->ciclos = 0;
+            aux->prox = NULL;
+            inserir_produtos(&erros, aux);
+        } else {
+            walk = &(*walk)->prox;
+        }
+    }
+    return erros;
 }
