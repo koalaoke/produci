@@ -29,7 +29,8 @@ struct Atividade{
 
 struct Etapa{
     char nome[STR_LEN];             // Nome da etapa
-    int capacidade;                 // Quantos produtos podem ser tratados
+    int capacidade;  
+    int id;               // Quantos produtos podem ser tratados
     int qtd_produtos;               // Quantos produtos estão
     struct Produto *fila_espera;    // Fila de espera de produtos
     struct Atividade *atividade;    // Lista de atividades

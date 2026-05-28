@@ -1,14 +1,14 @@
 //SIMULACAO [nome] [semente] [limite de ticks]
 //PRODUTOS <quantidade> <taxa_produtos_por_tick> <modelo>
 //LINHA <n_etapas> 
-//ETAPA <id> <n_atividades> [nome]
+//ETAPA <id> [nome]
 //ATIVIDADE <id> <tempo> <taxa_falha> <capacidade> [vazão] [nome]
 //
-//ETAPA <id> <n_atividades> [nome]
+//ETAPA <id> [nome]
 //ATIVIDADE <id> <tempo> <taxa_falha> <capacidade> [vazão] [nome]
 //ATIVIDADE <id> <tempo> <taxa_falha> <capacidade> [vazão] [nome]
 //
-//ETAPA <id> <n_atividades> [nome]
+//ETAPA <id> [nome]
 //ATIVIDADE <id> <tempo> <taxa_falha> <capacidade> [vazão] [nome]
 //ATIVIDADE <id> <tempo> <taxa_falha> <capacidade> [vazão] [nome]
 
@@ -17,20 +17,17 @@
 SIMULACAO ExemploSimulacao
 PRODUTOS 10 5 ModeloA
 
-ETAPA 123 3 etapa1
-ATIVIDADE Atividade1
-ATIVIDADE Atividade2
-ATIVIDADE Atividade3
+ETAPA 123 etapa1
 
-ETAPA 947 2 Etapa2
+ETAPA 947 Etapa2
 ATIVIDADE Atividade3
 ATIVIDADE Atividade4
 
-ETAPA 012 2 Etapa3
+ETAPA 012 Etapa3
 ATIVIDADE Atividade5
 ATIVIDADE Atividade6
 
-ETAPA 768 4 Etapa4
+ETAPA 768 Etapa4
 ATIVIDADE Atividade8
 ATIVIDADE Atividade9
 ATIVIDADE Atividade10

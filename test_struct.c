@@ -1,4 +1,5 @@
 #include "structs.h"
+#include "read_file.h"
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -7,21 +8,18 @@
 
 int main(){
     srand(time(NULL));
+    FILE *file = fopen("assets.txt", "r"); //ponteiro pro arquivo
+    if (file == NULL) { //erro de abertura do arquivo
+        perror("fopen for read");
+        return EXIT_FAILURE;
+    }
+    
     struct Linha *processo1 = criar_linha("Linha de processo");
-
-    criar_etapa(processo1, "Etapa 1", 3);
-    criar_atividade(processo1, "Atividade 1", 3, 1, 25);
-    criar_atividade(processo1, "Atividade 2", 3, 1, 25);
-    criar_atividade(processo1, "Atividade 3", 3, 1, 25);
-    criar_etapa(processo1, "Etapa 2", 1);
-    criar_atividade(processo1, "Atividade 4", 3, 3, 25);
-    criar_atividade(processo1, "Atividade 5", 3, 3, 25);
-    criar_atividade(processo1, "Atividade 6", 3, 3, 25);
-    criar_etapa(processo1, "Etapa 3", 3);
-    criar_atividade(processo1, "Atividade 7", 3, 3, 25);
-    criar_atividade(processo1, "Atividade 8", 3, 3, 25);
-    criar_atividade(processo1, "Atividade 9", 3, 3, 25);
-    imprime_processo(processo1);
+    int flag = 0;
+    char nome_arquivo[128] = "assets.txt";
+    while (flag == 0) {
+        flag = adicionar_etapa(&(processo1->etapa), file);
+    }
 
     struct Label label;
     strcpy(label.nome, "Chinela Havianas");
@@ -95,7 +93,7 @@ int main(){
                 processo1->qtd_produtos--;
             }
         }
-    }
+    } 
 
     free(lote1);
     destruir_linha(processo1);
