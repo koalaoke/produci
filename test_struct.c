@@ -1,67 +1,97 @@
 #include "structs.h"
+#include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 
 int main(){
+    srand(time(NULL));
     struct Linha *processo1 = criar_linha("Linha de processo");
 
-    criar_etapa(processo1, "Etapa 1");
-    criar_atividade(processo1, "Atividade 1", 3, 3, 50);
-    criar_atividade(processo1, "Atividade 2", 3, 3, 50);
-    criar_atividade(processo1, "Atividade 3", 3, 3, 50);
-    criar_etapa(processo1, "Etapa 2");
-    criar_atividade(processo1, "Atividade 4", 3, 3, 50);
-    criar_atividade(processo1, "Atividade 5", 3, 3, 50);
-    criar_atividade(processo1, "Atividade 6", 3, 3, 50);
-    criar_etapa(processo1, "Etapa 3");
-    criar_atividade(processo1, "Atividade 7", 3, 3, 50);
-    criar_atividade(processo1, "Atividade 8", 3, 3, 50);
-    criar_atividade(processo1, "Atividade 9", 3, 3, 50);
+    criar_etapa(processo1, "Etapa 1", 3);
+    criar_atividade(processo1, "Atividade 1", 3, 1, 25);
+    criar_atividade(processo1, "Atividade 2", 3, 1, 25);
+    criar_atividade(processo1, "Atividade 3", 3, 1, 25);
+    criar_etapa(processo1, "Etapa 2", 1);
+    criar_atividade(processo1, "Atividade 4", 3, 3, 25);
+    criar_atividade(processo1, "Atividade 5", 3, 3, 25);
+    criar_atividade(processo1, "Atividade 6", 3, 3, 25);
+    criar_etapa(processo1, "Etapa 3", 3);
+    criar_atividade(processo1, "Atividade 7", 3, 3, 25);
+    criar_atividade(processo1, "Atividade 8", 3, 3, 25);
+    criar_atividade(processo1, "Atividade 9", 3, 3, 25);
     imprime_processo(processo1);
 
     struct Label label;
     strcpy(label.nome, "Chinela Havianas");
 
     struct Produto* lote1 = criar_lote(&label, 10);
-    imprimir_lote(lote1);
-    struct Produto* prods_transito = lote1;
     processo1->qtd_produtos = 10;
 
-    while (processo1->qtd_produtos > 0) {
+    struct Produto* produtos_novos = lote1;
+
+    while (processo1->qtd_produtos) {
+        // Começo da linha
         struct Etapa *etapa = processo1->etapa;
+
+        if (produtos_novos) {
+            inserir_produtos(&processo1->etapa->fila_espera, produtos_novos);
+            produtos_novos = NULL;
+        }
+
+        struct Produto* produtos_em_transito = NULL;
+
         while (etapa) {
-            printf("%s:\n",etapa->nome);
+            // Para toda etapa
+            inserir_produtos(&etapa->fila_espera, produtos_em_transito);
+            produtos_em_transito = NULL;
+
+            while (etapa->qtd_produtos < etapa->capacidade && etapa->fila_espera) {
+                struct Produto *aux = remover_produto(&etapa->fila_espera);
+                inserir_produtos(&etapa->atividade->fila, aux);
+                etapa->qtd_produtos++;
+            }
+
+            printf("%s: [%d/%d] -> ",etapa->nome, etapa->qtd_produtos, etapa->capacidade);
+            imprimir_lote(etapa->fila_espera);
             struct Atividade *atividade = etapa->atividade;
+
             while (atividade) {
+                // Para toda atividade
                 printf("%s: ",atividade->nome);
                 imprimir_lote(atividade->fila);
 
                 contar_ciclo(&atividade->fila, atividade->capacidade);
-                inserir_produtos(&atividade->fila, prods_transito);
-                prods_transito = remover_prontos(&atividade->fila, atividade->ciclos);
 
-                if (prods_transito) {
-                    struct Produto *prods_erro = remover_erros(&atividade->fila, atividade->taxa_erro);
+                struct Produto *produtos_prontos = remover_prontos(&atividade->fila, atividade->ciclos);
+
+                if (produtos_prontos) {
+                    struct Produto *produtos_falhos = remover_erros(&produtos_prontos, atividade->taxa_erro);
                     printf("Defeituosos: ");
-                    imprimir_lote(prods_erro);
-                    inserir_produtos(&etapa->atividade->fila, prods_erro);
+                    imprimir_lote(produtos_falhos);
+                    etapa->qtd_produtos = etapa->qtd_produtos - contar_produtos(produtos_falhos);
+                    inserir_produtos(&etapa->fila_espera, produtos_falhos);
                 }
 
+                inserir_produtos(&atividade->fila, produtos_em_transito);
+                produtos_em_transito = produtos_prontos;
                 atividade = atividade->prox;
             }
+
+            etapa->qtd_produtos = etapa->qtd_produtos - contar_produtos(produtos_em_transito);
             etapa = etapa->prox;
         }
+
         printf("---\n");
         sleep(1);
 
-        if(prods_transito){
-            struct Produto* feitos = remover_prontos(&prods_transito, 0);
+        if(produtos_em_transito){
+            struct Produto* produtos_finalizados = remover_prontos(&produtos_em_transito, 0);
             printf("Feitos: \n");
-            imprimir_lote(feitos);
-            while (feitos) {
-                remover_produto(&feitos);
+            imprimir_lote(produtos_finalizados);
+            while (produtos_finalizados) {
+                remover_produto(&produtos_finalizados);
                 processo1->qtd_produtos--;
             }
         }

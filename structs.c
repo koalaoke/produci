@@ -51,7 +51,6 @@ void destruir_linha(struct Linha *linha){
     free(linha);
 }
 
-
 struct Linha* criar_linha(char* nome){
     struct Linha *linha = malloc(sizeof(struct Linha));
     linha->etapa = NULL;
@@ -59,11 +58,14 @@ struct Linha* criar_linha(char* nome){
     return linha;
 }
 
-void criar_etapa(struct Linha *linha, char* nome_etapa){
+void criar_etapa(struct Linha *linha, char *nome_etapa, int capacidade){
     struct Etapa *nova_etapa = malloc(sizeof(struct Etapa));
     strcpy(nova_etapa->nome, nome_etapa);
     nova_etapa->atividade = NULL;
     nova_etapa->prox = NULL;
+    nova_etapa->fila_espera = NULL;
+    nova_etapa->capacidade = capacidade;
+    nova_etapa->qtd_produtos = 0;
 
     struct Etapa **walk = &(linha)->etapa;
     struct Etapa *ante = NULL;
@@ -94,7 +96,6 @@ void criar_atividade(struct Linha *linha, char* nome_atividade, int ciclos, int 
         etapa = etapa->prox;
     }
 
-    nova_atv->etapa = etapa;
     struct Atividade **walk = &etapa->atividade;
     while(*walk){
         walk = &(*walk)->prox;
@@ -122,6 +123,16 @@ void contar_ciclo(struct Produto **lote, int capacidade){
         aux->ciclos++;
         aux = aux->prox;
     }
+}
+
+int contar_produtos(struct Produto *lote){
+    int count = 0;
+    while (lote) {
+        lote = lote->prox;
+        count++;
+    }
+
+    return count;
 }
 
 void inserir_produtos(struct Produto **destination, struct Produto *source){
