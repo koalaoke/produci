@@ -5,7 +5,7 @@
 
 void imprimir_lote(struct Produto *lote) {
     if (lote == NULL) {
-        printf("[!] O lote esta vazio (NULL).\n");
+        printf("\n");
         return;
     }
     struct Produto *atual = lote;
@@ -142,7 +142,7 @@ struct Produto *remover_produto(struct Produto **lote){
 
 struct Produto *remover_prontos(struct Produto **lote, int ciclos){
     struct Produto *prontos = NULL;
-    while (*lote != NULL && (*lote)->ciclos >= ciclos) {
+    while (*lote != NULL && (*lote)->ciclos > ciclos) {
         struct Produto *aux = remover_produto(lote);
         aux->ciclos = 0;
         inserir_produtos(&prontos, aux);
@@ -154,6 +154,7 @@ struct Produto *remover_prontos(struct Produto **lote, int ciclos){
 struct Produto* remover_erros(struct Produto **lote, int taxa_erros){
     struct Produto *erros = NULL;
     struct Produto **walk = lote;
+
     while (*walk) {
         struct Produto *aux = *walk;
         if(rand() % 100 < taxa_erros){
