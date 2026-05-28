@@ -3,13 +3,35 @@
 //LINHA <n_etapas> 
 //ETAPA <id> <n_atividades> [nome]
 //ATIVIDADE <id> <tempo> <taxa_falha> <capacidade> [vazão] [nome]
+//
+//ETAPA <id> <n_atividades> [nome]
+//ATIVIDADE <id> <tempo> <taxa_falha> <capacidade> [vazão] [nome]
+//ATIVIDADE <id> <tempo> <taxa_falha> <capacidade> [vazão] [nome]
+//
+//ETAPA <id> <n_atividades> [nome]
+//ATIVIDADE <id> <tempo> <taxa_falha> <capacidade> [vazão] [nome]
+//ATIVIDADE <id> <tempo> <taxa_falha> <capacidade> [vazão] [nome]
+
 
 
 SIMULACAO ExemploSimulacao
 PRODUTOS 10 5 ModeloA
-ETAPA Bernardo_merda
-ATIVIDADE Tarefa1
-ATIVIDADE Tarefa2
-ETAPA MAurino_bosta
-ETAPA Breno_foda
-ETAPA Bosta
+
+ETAPA 123 3 etapa1
+ATIVIDADE Atividade1
+ATIVIDADE Atividade2
+ATIVIDADE Atividade3
+
+ETAPA 947 2 Etapa2
+ATIVIDADE Atividade3
+ATIVIDADE Atividade4
+
+ETAPA 012 2 Etapa3
+ATIVIDADE Atividade5
+ATIVIDADE Atividade6
+
+ETAPA 768 4 Etapa4
+ATIVIDADE Atividade8
+ATIVIDADE Atividade9
+ATIVIDADE Atividade10
+ATIVIDADE Atividade11
