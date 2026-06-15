@@ -58,7 +58,7 @@ struct Linha* criar_linha(char* nome){
     return linha;
 }
 
-void criar_etapa(struct Linha *linha, char *nome_etapa, int capacidade){
+struct Etapa* criar_etapa(struct Linha *linha, char *nome_etapa, int capacidade){
     struct Etapa *nova_etapa = malloc(sizeof(struct Etapa));
     strcpy(nova_etapa->nome, nome_etapa);
     nova_etapa->atividade = NULL;
@@ -79,11 +79,6 @@ void criar_etapa(struct Linha *linha, char *nome_etapa, int capacidade){
 }
 
 void criar_atividade(struct Linha *linha, char* nome_atividade, int ciclos, int capacidade, int taxa_erro){
-    struct Etapa *etapa = (linha)->etapa;
-    if (!etapa) {
-        return;
-    }
-
     struct Atividade *nova_atv = malloc(sizeof(struct Atividade));
     strcpy(nova_atv->nome, nome_atividade);
     nova_atv->ciclos = ciclos;
@@ -92,16 +87,6 @@ void criar_atividade(struct Linha *linha, char* nome_atividade, int ciclos, int 
     nova_atv->prox = NULL;
     nova_atv->fila = NULL;
 
-    while(etapa->prox){
-        etapa = etapa->prox;
-    }
-
-    struct Atividade **walk = &etapa->atividade;
-    while(*walk){
-        walk = &(*walk)->prox;
-    }
-
-    *walk = nova_atv;
 }
 
 struct Produto* criar_lote(struct Label *label, int qtd){
@@ -115,6 +100,37 @@ struct Produto* criar_lote(struct Label *label, int qtd){
             lote[i].prox = &lote[i+1];
     }
     return lote;
+}
+
+
+void anexar_etapa(struct Linha *linha, struct Etapa *etapa) {
+    struct Etapa **walk = &(linha)->etapa;
+    struct Etapa *ante = NULL;
+    while(*walk){
+        ante = *walk;
+        walk = &(ante)->prox;
+    }
+
+    etapa->ante = ante;
+    *walk = etapa;
+}
+
+void anexar_atividade(struct Linha *linha, struct Atividade *atividade) {
+    struct Etapa *etapa = (linha)->etapa;
+    if (!etapa) {
+        return;
+    }
+
+    while(etapa->prox){
+        etapa = etapa->prox;
+    }
+
+    struct Atividade **walk = &etapa->atividade;
+    while(*walk){
+        walk = &(*walk)->prox;
+    }
+
+    *walk = atividade;
 }
 
 void contar_ciclo(struct Produto **lote, int capacidade){

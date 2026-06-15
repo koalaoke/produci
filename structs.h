@@ -42,9 +42,12 @@ struct Linha* criar_linha(char *nome);
 void imprime_processo(struct Linha *linha);
 void imprimir_lote(struct Produto *lote);
 
-void criar_etapa(struct Linha *linha, char *nome_etapa, int capacidade);
-void criar_atividade(struct Linha *linha, char *nome_atividade, int ciclos, int capacidade, int taxa_erro);
+struct Etapa *criar_etapa(char *nome_etapa, int capacidade);
+struct Atividade *criar_atividade(char *nome_atividade, int ciclos, int capacidade, int taxa_erro);
 struct Produto* criar_lote(struct Label *label, int qtd);
+
+void anexar_etapa(struct Linha *linha, struct Etapa *etapa);
+void anexar_atividade(struct Linha *linha, struct Atividade *atividade);
 
 void inserir_produtos(struct Produto **destination, struct Produto *source);
 void contar_ciclo(struct Produto **lote, int capacidade);
