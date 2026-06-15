@@ -41,6 +41,8 @@ struct Etapa{
 struct Linha* criar_linha(char *nome);
 void imprime_processo(struct Linha *linha);
 void imprimir_lote(struct Produto *lote);
+void imprimir_etapa(struct Etapa *etapa);
+void imprimir_atividade(struct Atividade *atividade);
 
 struct Etapa *criar_etapa(char *nome_etapa, int capacidade);
 struct Atividade *criar_atividade(char *nome_atividade, int ciclos, int capacidade, int taxa_erro);

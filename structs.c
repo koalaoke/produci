@@ -21,14 +21,22 @@ void imprime_processo(struct Linha *linha){
     struct Etapa *etapa = linha->etapa;
 
     while (etapa) {
-        printf("%s\n",etapa->nome);
+        imprimir_etapa(etapa);
         struct Atividade *atividade = etapa->atividade;
         while (atividade) {
-            printf("\t%s\n",atividade->nome);
+            printf("-> ");
+            imprimir_atividade(atividade);
             atividade = atividade->prox;
         }
         etapa = etapa->prox;
     }
+}
+
+void imprimir_etapa(struct Etapa *etapa) {
+    printf("%s: [%d/%d]\n",etapa->nome,etapa->qtd_produtos,etapa->capacidade);
+}
+void imprimir_atividade(struct Atividade *atividade) {
+    printf("%s: [%d, %d, %d%%]\n",atividade->nome, atividade->ciclos, atividade->capacidade, atividade->taxa_erro);
 }
 
 void destruir_linha(struct Linha *linha){
