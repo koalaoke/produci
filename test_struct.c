@@ -8,18 +8,18 @@
 
 int main(){
     srand(time(NULL));
-    FILE *file = fopen("assets.txt", "r"); //ponteiro pro arquivo
+
+    char nome_arquivo[128] = "assets.txt";
+    FILE *file = fopen(nome_arquivo, "r"); //ponteiro pro arquivo
     if (file == NULL) { //erro de abertura do arquivo
         perror("fopen for read");
         return EXIT_FAILURE;
     }
-    
+
     struct Linha *processo1 = criar_linha("Linha de processo");
-    int flag = 0;
-    char nome_arquivo[128] = "assets.txt";
-    while (flag == 0) {
-        flag = adicionar_etapa(&(processo1->etapa), file);
-    }
+    int flag = ler_processo(processo1, file);
+
+    imprime_processo(processo1);
 
     struct Label label;
     strcpy(label.nome, "Chinela Havianas");
@@ -30,7 +30,6 @@ int main(){
     struct Produto* produtos_novos = lote1;
 
     while (processo1->qtd_produtos) {
-        // Começo da linha
         struct Etapa *etapa = processo1->etapa;
 
         if (produtos_novos) {

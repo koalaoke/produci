@@ -17,18 +17,16 @@
 SIMULACAO ExemploSimulacao
 PRODUTOS 10 5 ModeloA
 
-ETAPA 123 etapa1
+ETAPA Etapa1 3
+ATIVIDADE Atividade1 5 5 5
+ATIVIDADE Atividade2 5 5 5
 
-ETAPA 947 Etapa2
-ATIVIDADE Atividade3
-ATIVIDADE Atividade4
+ETAPA Etapa2 2
+ATIVIDADE Atividade3 5 5 5
+ATIVIDADE Atividade4 5 5 5
 
-ETAPA 012 Etapa3
-ATIVIDADE Atividade5
-ATIVIDADE Atividade6
-
-ETAPA 768 Etapa4
-ATIVIDADE Atividade8
-ATIVIDADE Atividade9
-ATIVIDADE Atividade10
-ATIVIDADE Atividade11
+ETAPA Etapa3 3
+ATIVIDADE Atividade5 5 5 5
+ATIVIDADE Atividade6 5 5 5
+ATIVIDADE Atividade7 5 5 5
+ATIVIDADE Atividade8 5 5 5
