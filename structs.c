@@ -58,7 +58,7 @@ struct Linha* criar_linha(char* nome){
     return linha;
 }
 
-struct Etapa* criar_etapa(struct Linha *linha, char *nome_etapa, int capacidade){
+struct Etapa* criar_etapa(char *nome_etapa, int capacidade){
     struct Etapa *nova_etapa = malloc(sizeof(struct Etapa));
     strcpy(nova_etapa->nome, nome_etapa);
     nova_etapa->atividade = NULL;
@@ -67,18 +67,10 @@ struct Etapa* criar_etapa(struct Linha *linha, char *nome_etapa, int capacidade)
     nova_etapa->capacidade = capacidade;
     nova_etapa->qtd_produtos = 0;
 
-    struct Etapa **walk = &(linha)->etapa;
-    struct Etapa *ante = NULL;
-    while(*walk){
-        ante = *walk;
-        walk = &(ante)->prox;
-    }
-
-    nova_etapa->ante = ante;
-    *walk = nova_etapa;
+    return nova_etapa;
 }
 
-void criar_atividade(struct Linha *linha, char* nome_atividade, int ciclos, int capacidade, int taxa_erro){
+struct Atividade *criar_atividade(char* nome_atividade, int ciclos, int capacidade, int taxa_erro){
     struct Atividade *nova_atv = malloc(sizeof(struct Atividade));
     strcpy(nova_atv->nome, nome_atividade);
     nova_atv->ciclos = ciclos;
@@ -87,6 +79,7 @@ void criar_atividade(struct Linha *linha, char* nome_atividade, int ciclos, int 
     nova_atv->prox = NULL;
     nova_atv->fila = NULL;
 
+    return nova_atv;
 }
 
 struct Produto* criar_lote(struct Label *label, int qtd){
